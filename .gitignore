@@ -1,0 +1,21 @@
+# Compiled output
+bin/
+*.class
+webapp/WEB-INF/classes/
+
+# Downloaded server (Tomcat is fetched by start-web.bat)
+tools/
+
+# Local database config — contains your MySQL password
+webapp/WEB-INF/db.properties
+
+# Desktop app runtime data (user records)
+data/*.txt
+Attendence/data/*.txt
+
+# Extracted MySQL Connector/J distribution (not needed; jar lives in webapp/WEB-INF/lib)
+lib/
+
+# Logs
+*.log
+logs/

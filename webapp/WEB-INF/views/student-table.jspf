@@ -1,0 +1,57 @@
+<%
+    @SuppressWarnings("unchecked")
+    List<Student> tableStudents = (List<Student>) request.getAttribute("students");
+    if (tableStudents == null) {
+        tableStudents = (List<Student>) request.getAttribute("recentStudents");
+    }
+    if (tableStudents == null) {
+        tableStudents = java.util.Collections.emptyList();
+    }
+    String ctxPath = request.getContextPath();
+%>
+<div class="table-wrap">
+<table id="studentTable">
+    <thead>
+        <tr>
+            <th>Roll No</th>
+            <th>Name</th>
+            <th>Division</th>
+            <th>Total</th>
+            <th>Attended</th>
+            <th>Percentage</th>
+            <th>Status</th>
+            <th>Classes to 75%</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    <% if (tableStudents.isEmpty()) { %>
+        <tr><td colspan="9">No matching student records.</td></tr>
+    <% } else {
+        for (Student student : tableStudents) {
+            String status = student.getStatus();
+            String badge = "badge-eligible";
+            if (AttendanceCalculator.STATUS_DEFAULTER.equals(status)) {
+                badge = "badge-defaulter";
+            } else if (AttendanceCalculator.STATUS_CRITICAL.equals(status)) {
+                badge = "badge-critical";
+            }
+            String rowClass = student.isCritical() ? "row-critical" : "";
+    %>
+        <tr class="<%= rowClass %>">
+            <td><%= HtmlEscape.e(student.getRollNo()) %></td>
+            <td><%= HtmlEscape.e(student.getName()) %></td>
+            <td><%= HtmlEscape.e(student.getDivision()) %></td>
+            <td><%= student.getTotalClasses() %></td>
+            <td><%= student.getClassesAttended() %></td>
+            <td><%= AttendanceCalculator.formatPercentage(student.getPercentage()) %></td>
+            <td><span class="badge <%= badge %>"><%= HtmlEscape.e(status) %></span></td>
+            <td><%= student.getClassesNeededFor75() %></td>
+            <td>
+                <a class="btn btn-ghost" href="<%= ctxPath %>/students?action=edit&amp;roll=<%= HtmlEscape.e(student.getRollNo()) %>">Update</a>
+            </td>
+        </tr>
+    <% } } %>
+    </tbody>
+</table>
+</div>
