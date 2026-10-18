@@ -28,6 +28,13 @@ run.bat
 
 You can also create a new account from **Register** (one common page for both roles).
 
+## What is excluded from git (.gitignore)
+
+- `webapp/WEB-INF/db.properties` — contains your MySQL root password; a `db.properties.example` placeholder is committed instead
+- `tools/` (downloaded Tomcat), `bin/` + `*.class` (compiled output), `lib/` (extracted connector source), and `data/*.txt` (user records)
+
+Anyone cloning it just needs to copy `db.properties.example` → `db.properties`, set their password, run the schema, and run `start-web.bat`.
+
 ## Project structure
 
 ```
